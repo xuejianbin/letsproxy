@@ -207,7 +207,7 @@ access_log off;
 {{/* Get the SSL_POLICY defined by this container, falling back to "Mozilla-Intermediate" */}}
 {{ $ssl_policy := or ($.Env.SSL_POLICY) "Mozilla-Intermediate" }}
 {{ template "ssl_policy" (dict "ssl_policy" $ssl_policy) }}
-# error_log /dev/stderr; nginx: [emerg] open() "/dev/stderr" failed (6: No such device or address)
+error_log /dev/stderr;
 
 {{ if $.Env.RESOLVERS }}
 resolver {{ $.Env.RESOLVERS }};
