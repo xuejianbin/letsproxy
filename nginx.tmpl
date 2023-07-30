@@ -252,10 +252,10 @@ upstream {{ .Upstream }} {
     # Container: {{ $container.Name }}
         {{- $args := dict "globals" $.globals "container" $container }}
         {{- template "container_ip" $args }}
-        {{- $ip := or $.container.Env.VIRTUAL_IP $args.ip }}
+        {{- $ip := or $container.Env.VIRTUAL_IP $args.ip }}
         {{- $args := dict "container" $container }}
         {{- template "container_port" $args }}
-        {{- $port := or $.container.Env.VIRTUAL_PORT $args.port }}
+        {{- $port := or $container.Env.VIRTUAL_PORT $args.port }}
         {{- if $ip }}
             {{- $server_found = true }}
     server {{ $ip }}:{{ $port }};
@@ -477,7 +477,7 @@ server {
     {{- $https_method := $vhost.https_method }}
 
     {{- $is_regexp := hasPrefix "~" $host }}
-    {{- $upstream_name := when (or $is_regexp $globals.sha1_upstream_name) (sha1 $host) $host }}
+    {{- $upstream_name := sha1 $host }}
 
     {{- $paths := groupBy $containers "Env.VIRTUAL_PATH" }}
     {{- $nPaths := len $paths }}
