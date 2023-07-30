@@ -216,7 +216,7 @@
         {{- else if eq .Proto "grpc" }}
         grpc_pass {{ trim .Proto }}://{{ trim .Upstream }};
         {{- else }}
-        proxy_pass {{ trim .Proto }}://{{ trim .Upstream }}{{ trim .Dest }};
+        proxy_pass {{ trim .Proto }}://{{ trim .Containers }}{{ trim .Dest }};
         set $upstream_keepalive {{ if $keepalive }}true{{ else }}false{{ end }};
         {{- end }}
 
@@ -237,7 +237,7 @@
 {{- end }}
 
 {{- define "upstream" }}
-upstream {{ .Upstream }} {
+upstream {{ .Containers }} {
     {{- $server_found := false }}
     {{- $loadbalance := first (keys (groupByLabel .Containers "com.github.nginx-proxy.nginx-proxy.loadbalance")) }}
     {{- if $loadbalance }}
