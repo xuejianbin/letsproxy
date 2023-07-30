@@ -247,7 +247,7 @@ upstream {{ .Upstream }} {
     {{- range $container := .Containers }}
 	{{ $enable_acme := eq (or ($container.Env.ENABLE_ACME) "") "true" }}
 		{{ if $enable_acme }}
-			#ACME_DOMAINS {{$container.Env.VIRTUAL_HOST}}
+	#ACME_DOMAINS {{$container.Env.VIRTUAL_HOST}}
 		{{ end }}
     # Container: {{ $container.Name }}
         {{- $args := dict "globals" $.globals "container" $container }}

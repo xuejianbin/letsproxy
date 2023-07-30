@@ -2,9 +2,9 @@ FROM nginxproxy/nginx-proxy:latest
 
 RUN apt-get update \
  && apt-get install -y -q --no-install-recommends \
-    cron curl nginx-module-njs \
+    cron curl nginx-module-njs vi \
  && apt-get clean \
- && rm -r /var/lib/apt/lists/*
+ && rm -r /var/lib/apt/lists/* 
 
 
 ENV AUTO_UPGRADE=1
