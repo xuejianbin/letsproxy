@@ -2,7 +2,7 @@ FROM nginxproxy/nginx-proxy:latest
 
 RUN apt-get update \
  && apt-get install -y -q --no-install-recommends \
-    cron curl nginx-module-njs vim \
+    cron curl nginx-module-njs \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/* 
 
