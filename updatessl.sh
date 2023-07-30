@@ -16,6 +16,8 @@ updatessl() {
     for d_list in $(grep ACME_DOMAINS $DEFAULT_CONF | cut -d ' ' -f 2);
     do
       d=$(echo "$d_list" | cut -d , -f 1)
+      echo $d_list
+      echo $d
       $ACME_BIN --issue --server letsencrypt --ocsp -k ec-256 \
       -d $d_list \
       --nginx \
