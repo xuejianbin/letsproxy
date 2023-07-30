@@ -216,7 +216,7 @@
         {{- else if eq .Proto "grpc" }}
         grpc_pass {{ trim .Proto }}://{{ trim .Upstream }};
         {{- else }}
-        proxy_pass {{ trim .Proto }}://{{ trim .Containers }}{{ trim .Dest }};
+        proxy_pass {{ trim .Proto }}://{{ trim .Containers.Name }}{{ trim .Dest }};
         set $upstream_keepalive {{ if $keepalive }}true{{ else }}false{{ end }};
         {{- end }}
 
@@ -237,7 +237,7 @@
 {{- end }}
 
 {{- define "upstream" }}
-upstream {{ .Containers }} {
+upstream {{ .Containers.Name }} {
     {{- $server_found := false }}
     {{- $loadbalance := first (keys (groupByLabel .Containers "com.github.nginx-proxy.nginx-proxy.loadbalance")) }}
     {{- if $loadbalance }}
@@ -252,10 +252,10 @@ upstream {{ .Containers }} {
     # Container: {{ $container.Name }}
         {{- $args := dict "globals" $.globals "container" $container }}
         {{- template "container_ip" $args }}
-        {{- $ip := $args.ip }}
+        {{- $ip := or $.container.Env.VIRTUAL_IP $args.ip }}
         {{- $args := dict "container" $container }}
         {{- template "container_port" $args }}
-        {{- $port := $args.port }}
+        {{- $port := or $.container.Env.VIRTUAL_PORT $args.port }}
         {{- if $ip }}
             {{- $server_found = true }}
     server {{ $ip }}:{{ $port }};
