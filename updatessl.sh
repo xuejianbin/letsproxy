@@ -6,7 +6,6 @@ ACME_BIN="/acme.sh/acme.sh --home /acme.sh --config-home /acmecerts"
 
 DEFAULT_CONF="/etc/nginx/conf.d/default.conf"
 
-
 CERTS="/etc/nginx/certs"
 
 
@@ -18,7 +17,7 @@ updatessl() {
       d=$(echo "$d_list" | cut -d , -f 1)
       echo $d_list
       echo $d
-      $ACME_BIN --issue --server letsencrypt --ocsp -k ec-256 \
+      $ACME_BIN ./acme.sh --issue --dns dns_dp \
       -d $d_list \
       --nginx \
       --fullchain-file "$CERTS/$d.crt" \
