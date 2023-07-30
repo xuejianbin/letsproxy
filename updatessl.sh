@@ -17,7 +17,7 @@ updatessl() {
       d=$(echo "$d_list" | cut -d , -f 1)
       echo $d_list
       echo $d
-      $ACME_BIN ./acme.sh --issue --dns dns_dp \
+      $ACME_BIN --issue --dns dns_dp \
       -d $d_list \
       --nginx \
       --fullchain-file "$CERTS/$d.crt" \
