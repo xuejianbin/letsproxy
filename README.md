@@ -55,6 +55,23 @@ services:
 ```
 docker run -itd --rm -p <server port>:80 -e VIRTUAL_HOST=example.com -e VIRTUAL_PORT=<server port> -e VIRTUAL_IP=<server ip>  -e ENABLE_ACME=true httpd
 ```
+或
+```
+version: '2'
+
+services:
+  httpd:
+    image: httpd
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=example.com
+      - VIRTUAL_PORT=8081
+      - VIRTUAL_IP=<server ip>
+      - ENABLE_ACME=true
+
+```
 另外修改acme生成证书为dnspod生成,默认首次使用，需要进入容器终端中，输入对应的变量，首次输入后，会自动保存acme目录下，后续不用再输入(注意不是secrect key)，
 ```
 export DP_Id=<dns id>
