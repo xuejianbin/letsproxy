@@ -76,6 +76,7 @@ services:
 ```
 export DP_Id=<dns id>
 export DP_Key=<dns token>
+acme.sh --register-account -m xxxxx@###.##
 ```
 
 ### 另外注意，该代理和系统自动的nginx端口可能冲突，建议可以直接卸载系统自带的nginx，配置文件不要和/etc/nginx中的重叠，可以把compose文件放到独立的目录中
