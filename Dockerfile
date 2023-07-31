@@ -6,8 +6,8 @@ RUN apt-get update \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/* 
 
- RUN addgroup -S sslproxy && adduser -S sslproxy -G sslproxy
- USER sslproxy:sslproxy
+ RUN adduser sslproxy
+ USER sslproxy
 
 
 ENV AUTO_UPGRADE=1
