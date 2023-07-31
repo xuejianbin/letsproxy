@@ -6,6 +6,9 @@ RUN apt-get update \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/* 
 
+ RUN addgroup -S sslproxy && addUser -S sslproxy -G sslproxy
+ USER sslproxy:sslproxy
+
 
 ENV AUTO_UPGRADE=1
 ENV LE_WORKING_DIR=/acme.sh

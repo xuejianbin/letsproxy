@@ -30,18 +30,23 @@ version: '2'
 
 services:
   letsproxy:
-    image: xuejianbin/letsproxy
+    image: xuejianbin/letsproxy:latest
     ports:
       - "80:80"
       - "443:443"
+    restart: unless-stopped
+    environment:
+      HTTPS_PORT: 443
+      HTTP_PORT: 80
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./proxy/certs:/etc/nginx/certs
       - ./proxy/acme:/acmecerts
       - ./proxy/conf.d:/etc/nginx/conf.d
-      - ./proxy/vhost.d:/etc/nginx/vhost.d 
-      - ./proxy/stream.d:/etc/nginx/stream.d 
-      - ./proxy/dhparam:/etc/nginx/dhparam 
+      - ./proxy/vhost.d:/etc/nginx/vhost.d
+      - ./proxy/stream.d:/etc/nginx/stream.d
+      - ./proxy/dhparam:/etc/nginx/dhparam
+    container_name: "sslproxy"
 ```
 
 
