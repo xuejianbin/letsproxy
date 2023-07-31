@@ -6,7 +6,7 @@ RUN apt-get update \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/* 
 
- RUN addgroup -S sslproxy && addUser -S sslproxy -G sslproxy
+ RUN addgroup -S sslproxy && adduser -S sslproxy -G sslproxy
  USER sslproxy:sslproxy
 
 
