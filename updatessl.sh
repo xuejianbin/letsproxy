@@ -12,11 +12,15 @@ CERTS="/etc/nginx/certs"
 updatessl() {
   nginx -t && nginx -s reload
   if grep ACME_DOMAINS $DEFAULT_CONF ; then
+    export DP_Id=$DP_Id
+    export DP_key=$DP_key
+    $ACME_BIN --register-account -m $ACME_EMAIL
+    echo $DP_Id
+    echo $DP_key
+    echo $ACME_EMAIL
     for d_list in $(grep ACME_DOMAINS $DEFAULT_CONF | cut -d ' ' -f 2);
     do
       d=$(echo "$d_list" | cut -d , -f 1)
-      echo $d_list
-      echo $d
       $ACME_BIN --issue --dns dns_dp \
       -d $d_list \
       --nginx \
