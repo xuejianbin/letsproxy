@@ -273,6 +273,15 @@ upstream {{ .Upstream }} {
 }
 {{- end }}
 
+# HTTP to HTTPS redirect
+server {
+    listen 80;
+    server_name _;
+    
+    # 重定向到HTTPS，保持原始域名和端口
+    return 301 https://$host:$server_port$request_uri;
+}
+
 # If we receive X-Forwarded-Proto, pass it through; otherwise, pass along the
 # scheme used to connect to this server
 map $http_x_forwarded_proto $proxy_x_forwarded_proto {
@@ -546,11 +555,14 @@ server {
     }
 
     location / {
-        {{- if eq $globals.external_https_port "443" }}
-        return 301 https://$host$request_uri;
-        {{- else }}
-        return 301 https://$host:{{ $globals.external_https_port }}$request_uri;
-        {{- end }}
+        # 获取原始请求端口
+        set $redirect_port $server_port;
+        # 如果请求端口与外部HTTP端口不同，则使用请求端口
+        if ($server_port != {{ $globals.external_http_port }}) {
+            set $redirect_port $server_port;
+        }
+        # 重定向到HTTPS并保持端口
+        return 301 https://$host:$redirect_port$request_uri;
     }
 }
     {{- end }}
