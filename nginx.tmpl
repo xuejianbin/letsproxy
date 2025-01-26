@@ -280,22 +280,14 @@ server {
     server_name _;
 
     location / {
-        # Handle the conversion from HTTP to HTTPS
-        set $redirect_server_name $server_name;
-        set $redirect_server_port $server_port;
-        
-        # If we have X-Forwarded-Host, use it
-        if ($http_x_forwarded_host != '') {
-            set $redirect_server_name $http_x_forwarded_host;
+        set $target_port "{{ $globals.external_https_port }}";
+        if ($server_port != "{{ $globals.external_http_port }}") {
+            set $target_port $server_port;
         }
-        
-        # If we have X-Forwarded-Port, use it
-        if ($http_x_forwarded_port != '') {
-            set $redirect_server_port $http_x_forwarded_port;
+        if ($http_x_forwarded_port != "") {
+            set $target_port $http_x_forwarded_port;
         }
-        
-        # Build the redirect URL
-        return 301 https://$redirect_server_name:$redirect_server_port$request_uri;
+        return 301 https://$host:$target_port$request_uri;
     }
 }
 
@@ -572,22 +564,14 @@ server {
     }
 
     location / {
-        # Handle the conversion from HTTP to HTTPS
-        set $redirect_server_name $server_name;
-        set $redirect_server_port $server_port;
-        
-        # If we have X-Forwarded-Host, use it
-        if ($http_x_forwarded_host != '') {
-            set $redirect_server_name $http_x_forwarded_host;
+        set $target_port "{{ $globals.external_https_port }}";
+        if ($server_port != "{{ $globals.external_http_port }}") {
+            set $target_port $server_port;
         }
-        
-        # If we have X-Forwarded-Port, use it
-        if ($http_x_forwarded_port != '') {
-            set $redirect_server_port $http_x_forwarded_port;
+        if ($http_x_forwarded_port != "") {
+            set $target_port $http_x_forwarded_port;
         }
-        
-        # Build the redirect URL
-        return 301 https://$redirect_server_name:$redirect_server_port$request_uri;
+        return 301 https://$host:$target_port$request_uri;
     }
 }
     {{- end }}
