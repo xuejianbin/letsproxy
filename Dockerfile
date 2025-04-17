@@ -9,6 +9,12 @@ RUN apt-get update \
 ENV AUTO_UPGRADE=1
 ENV LE_WORKING_DIR=/acme.sh
 ENV LE_CONFIG_HOME=/acmecerts
+
+# 添加代理环境变量
+ENV HTTP_PROXY=""
+ENV HTTPS_PROXY=""
+ENV NO_PROXY="localhost,127.0.0.1"
+
 RUN curl https://get.acme.sh | sh && crontab -l | sed 's#> /dev/null##' | crontab - \
     && $LE_WORKING_DIR/acme.sh --set-default-ca --server letsencrypt
 

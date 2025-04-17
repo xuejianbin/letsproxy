@@ -38,6 +38,10 @@ services:
     environment:
       HTTPS_PORT: 443
       HTTP_PORT: 80
+      # 可选：设置代理
+      HTTP_PROXY: "http://proxy.example.com:8080"  # 设置 HTTP 代理
+      HTTPS_PROXY: "http://proxy.example.com:8080" # 设置 HTTPS 代理
+      NO_PROXY: "localhost,127.0.0.1"              # 设置不使用代理的地址
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./proxy/certs:/etc/nginx/certs
